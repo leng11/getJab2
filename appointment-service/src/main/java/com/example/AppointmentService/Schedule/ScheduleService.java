@@ -1,15 +1,25 @@
 package com.example.AppointmentService.Schedule;
 
-import com.example.AppointmentService.Appointment.Appointment;
-import com.example.AppointmentService.Appointment.AppointmentRepository;
-import com.example.AppointmentService.Exception.ResourceNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import com.example.AppointmentService.Appointment.Appointment;
+import com.example.AppointmentService.Appointment.AppointmentRepository;
+import com.example.AppointmentService.Exception.ResourceNotFoundException;
+import com.example.commonUtility.event.KafkaConsumerEventService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -20,6 +30,13 @@ public class ScheduleService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    public ScheduleService(@Autowired final IncomingEvent incomingEvent,
+					@Value("${spring.application.event.incoming.topic.restock}") final String restockTopic,
+					@Value("${spring.application.event.incoming.topic.reminder}") final String reminderTopic
+					) {
+		KafkaConsumerEventService.addHandler(restockTopic, incomingEvent);
+		KafkaConsumerEventService.addHandler(reminderTopic, incomingEvent);
+    }
 
     public ResponseEntity<List<Schedule>> getAllSchedules(){
         return ResponseEntity.ok(scheduleRepository.findAll());

@@ -24,10 +24,12 @@ public class KafkaConsumerEventService {
 	
 	
 	public static EventHandler addHandler(final String topic, final EventHandler handler) {
+		log.info("registered {} for topic: {}", handler, topic);
 		return MSG_HANDLER_REGISTRY.put(topic, handler);
 	}
 	
 	public static EventHandler removeHandler(final String topic) {
+		log.info("un-registered {} for topic: {}", topic);
 		return MSG_HANDLER_REGISTRY.remove(topic);
 	}
 	
