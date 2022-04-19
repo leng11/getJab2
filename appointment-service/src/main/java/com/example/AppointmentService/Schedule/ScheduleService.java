@@ -24,7 +24,7 @@ public class ScheduleService {
     public ResponseEntity<List<Schedule>> getAllSchedules(){
         return ResponseEntity.ok(scheduleRepository.findAll());
     }
-    public ResponseEntity<Schedule> getSchedule(int id){
+    public ResponseEntity<Schedule> getSchedule(long id){
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Schedule not Found"));
         return ResponseEntity.ok(schedule);
     }
@@ -62,7 +62,7 @@ public class ScheduleService {
         return ResponseEntity.ok(reportList);
     }
 
-    public ResponseEntity<Map<String,Object>> book(int scheduleId, int userId){
+    public ResponseEntity<Map<String,Object>> book(long scheduleId, int userId){
         Map<String,Object> map = new HashMap<>();
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
         List<Appointment> appointmentList = schedule.getAppointmentList();

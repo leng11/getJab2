@@ -21,7 +21,7 @@ public class ScheduleController {
         return scheduleService.getAllSchedules();
     }
     @GetMapping("/schedule/{id}")
-    public ResponseEntity<Schedule> getAppointment(@PathVariable int id){
+    public ResponseEntity<Schedule> getAppointment(@PathVariable long id){
         return scheduleService.getSchedule(id);
     }
     @GetMapping("/schedule")
@@ -29,7 +29,7 @@ public class ScheduleController {
         return scheduleService.getByDate(date);
     }
     @PostMapping("/appointments/book")
-    public ResponseEntity<Map<String,Object>> book(@RequestParam int scheduleId, @RequestParam int userId){
+    public ResponseEntity<Map<String,Object>> book(@RequestParam long scheduleId, @RequestParam int userId){
         return scheduleService.book(scheduleId,userId);
     }
     @GetMapping("/appointments/report")

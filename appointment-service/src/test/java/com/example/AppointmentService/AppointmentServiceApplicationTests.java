@@ -51,12 +51,12 @@ class AppointmentServiceApplicationTests {
 		ResponseEntity<Map<String,Object>> response = appointmentController.setReminder(1,"email","test@email.com");
 		assertEquals("test@email.com",response.getBody().get("notifyString"));
 		assertEquals("email",response.getBody().get("notifyType"));
-		assertEquals(1,response.getBody().get("confirmationId"));
+		assertEquals(1L,response.getBody().get("confirmationId"));
 	}
 	@Test
 	public void cancelTest(){
 		ResponseEntity<Map<String,Object>> response = appointmentController.cancel(1);
-		assertEquals(1,response.getBody().get("confirmationId"));
+		assertEquals(1L,response.getBody().get("confirmationId"));
 		assertEquals("Cancelled",response.getBody().get("cancelConfirmId"));
 	}
 

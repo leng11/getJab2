@@ -23,7 +23,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int scheduleId;
+    private long scheduleId;
 
     @Temporal(TemporalType.DATE)
     private Date date;

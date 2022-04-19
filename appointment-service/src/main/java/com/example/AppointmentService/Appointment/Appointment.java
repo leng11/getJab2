@@ -17,7 +17,7 @@ import java.util.Date;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int confirmationId;
+    private long confirmationId;
 
     @JsonBackReference
     @ManyToOne

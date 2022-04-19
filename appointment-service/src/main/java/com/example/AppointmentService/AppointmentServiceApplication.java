@@ -13,7 +13,7 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.example.AppointmentService","com.example.commonUtility"})
 public class AppointmentServiceApplication {
 
 	public static void main(String[] args) {
