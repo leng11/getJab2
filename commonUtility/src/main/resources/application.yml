@@ -1,0 +1,51 @@
+
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles: local
+  application:
+    name: CenterService
+    event:
+      incoming:
+        topic:
+          shotAdministrated: shotAdministrated
+      outgoing:
+        topic:
+          reminder: publishReminder
+          restock: vaccineInventory
+    
+        
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: center-listener
+      topic:
+        name: vaccineInventory,shotAdministrated,publishReminder
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+logging:
+  level:
+    root: INFO
+

@@ -1,0 +1,22 @@
+
+
+For Windows OS.
+
+a. Setup:
+   1. Download Kafka from https://kafka.apache.org/downloads.
+   2. Unzip the download to C:/kafka.
+
+
+b. Bring up environment:
+   1. cd <Kafka install directory>/bin/windows 
+   2. ./zookeeper-server-start.bat ../../config/zookeeper.properties
+   3. ./kafka-server-start.bat ../../config/server.properties
+   4. ./kafka-topics.bat --bootstrap-server localhost:9092 --create --partitions 2 --replication-factor 1 --topic publishReminder
+   5. ./kafka-topics.bat --bootstrap-server localhost:9092 --create --partitions 2 --replication-factor 1 --topic vaccineInventory
+   6. ./kafka-topics.bat --bootstrap-server localhost:9092 --create --partitions 2 --replication-factor 1 --topic shotAdministrated
+
+
+   7. Bring up Mysql.
+
+
+   8. 
