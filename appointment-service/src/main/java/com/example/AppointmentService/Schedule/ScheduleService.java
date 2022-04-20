@@ -39,6 +39,12 @@ public class ScheduleService {
     }
 
     public ResponseEntity<List<Schedule>> getAllSchedules(){
+        List<Schedule> scheduleList = scheduleRepository.findAll();
+        scheduleList.stream()
+                .forEach(schedule -> {
+                    schedule.setCompletedSlots();
+                    schedule.setOpenSlots();
+                });
         return ResponseEntity.ok(scheduleRepository.findAll());
     }
     public ResponseEntity<Schedule> getSchedule(long id){
@@ -72,6 +78,7 @@ public class ScheduleService {
             Map<String, Object> map= new HashMap<>();
             map.put("center",schedule.getCenterId());
             map.put("vaccineTypeId",schedule.getVaccineTypeId());
+            schedule.setCompletedSlots();
             map.put("shotsAdministered",schedule.getCompletedSlot());
             reportList.add(map);
         }
@@ -79,26 +86,36 @@ public class ScheduleService {
         return ResponseEntity.ok(reportList);
     }
 
-    public ResponseEntity<Map<String,Object>> book(long scheduleId, int userId){
+    public ResponseEntity<Map<String,Object>> book(long scheduleId, int userId) {
         Map<String,Object> map = new HashMap<>();
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
-        List<Appointment> appointmentList = schedule.getAppointmentList();
-        Optional<Appointment> appointmentToSchedule = appointmentList.stream()
-                .filter(appointment -> appointment.getStatus().equalsIgnoreCase("open"))
-                .findFirst();
-        appointmentToSchedule.ifPresent(appointment -> {
-            appointment.setUserId(userId);
-            appointment.setStatus("Scheduled");
-        });
-        if(appointmentToSchedule.isPresent()){
-            appointmentRepository.save(appointmentToSchedule.get());
-            map.put("booked",true);
-            map.put("centerId",schedule.getCenterId());
-            map.put("confirmId",appointmentToSchedule.get().getConfirmationId());
-        }else{
-            map.put("booked",false);
-            map.put("error", "No appointments available");
+        if(schedule.getOpenSlot()<=0){
+            map.put("message", "No more open slots available");
+            return ResponseEntity.badRequest().body(map);
         }
+        Appointment appointment = new Appointment(schedule,userId, schedule.getCenterId(), "none","none","booked",null);
+        schedule.decOpenSlot();
+        appointmentRepository.save(appointment);
+        map.put("booked",true);
+        map.put("centerId",schedule.getCenterId());
+        map.put("confirmId",appointment.getConfirmationId());
+//        List<Appointment> appointmentList = schedule.getAppointmentList();
+//        Optional<Appointment> appointmentToSchedule = appointmentList.stream()
+//                .filter(appointment -> appointment.getStatus().equalsIgnoreCase("open"))
+//                .findFirst();
+//        appointmentToSchedule.ifPresent(appointment -> {
+//            appointment.setUserId(userId);
+//            appointment.setStatus("Scheduled");
+//        });
+//        if(appointmentToSchedule.isPresent()){
+//            appointmentRepository.save(appointmentToSchedule.get());
+//            map.put("booked",true);
+//            map.put("centerId",schedule.getCenterId());
+//            map.put("confirmId",appointmentToSchedule.get().getConfirmationId());
+//        }else{
+//            map.put("booked",false);
+//            map.put("error", "No appointments available");
+//        }
         return ResponseEntity.ok(map);
     }
 

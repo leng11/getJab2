@@ -26,8 +26,8 @@ public class AppointmentServiceApplication {
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(2022,4,6);
 			Time time = new Time(5,30,0);
-			Schedule schedule = new Schedule(new Date(calendar.getTimeInMillis()),time,1,1);
-			Schedule schedule2 = new Schedule(new Date(calendar.getTimeInMillis()),new Time(6,0,0),2,2);
+			Schedule schedule = new Schedule(new Date(calendar.getTimeInMillis()),time,1,1,100);
+			Schedule schedule2 = new Schedule(new Date(calendar.getTimeInMillis()),new Time(6,0,0),2,2,100);
 			Appointment appointment = new Appointment(schedule,0,1,"none","none","open",null);
 			Appointment appointment2 = new Appointment(schedule,1,1,"none","none","completed",null);
 			Appointment appointment3 = new Appointment(schedule2,0,1,"none","none","open",null);
@@ -39,6 +39,8 @@ public class AppointmentServiceApplication {
 			appointmentRepository.save(appointment2);
 			appointmentRepository.save(appointment3);
 			appointmentRepository.save(appointment4);
+
+
 
 		};
 	}

@@ -14,5 +14,6 @@ import java.util.Optional;
 public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
     Optional<List<Schedule>> findByDateBetween(Date startDate,Date endDate);
     Optional<List<Schedule>> findByDate(Date date);
+    Optional<Schedule> findFirstByOrderByDateDesc();
     Optional<Schedule> findByVaccineTypeId(int id);
 }
