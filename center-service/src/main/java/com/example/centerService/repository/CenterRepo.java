@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.centerService.model.Center;
 
 @Repository
+@Transactional
 public interface CenterRepo extends JpaRepository<Center,Long> {
-	@Transactional
     public Integer deleteByName(String name);
 }

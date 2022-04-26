@@ -32,6 +32,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import com.example.centerService.model.Center;
@@ -48,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 										"${spring.application.event.outgoing.topic.restock}"})
 @TestPropertySource(properties= {"spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}",
 										"spring.kafka.admin.bootstrap-servers=${spring.embedded.kafka.brokers}"})
+@ActiveProfiles({ "integrationTest" })
 class CenterServiceApplicationTests {
 	
 	@Autowired
@@ -181,7 +183,6 @@ class CenterServiceApplicationTests {
 																				});
 		org.junit.jupiter.api.Assertions.assertEquals("No records found for topic", exception.getMessage());
 	}
-
 	
 //     @Test
 //     void shotAdministrated() {

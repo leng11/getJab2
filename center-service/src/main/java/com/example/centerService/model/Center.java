@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,18 +29,21 @@ public class Center {
 	@Getter
 	@Setter
 	@Column(unique = true)
+	@NotNull
 	private String name;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String address;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String phone;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String manager;
-
 }

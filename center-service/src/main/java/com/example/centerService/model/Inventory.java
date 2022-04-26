@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.example.centerService.model.clientFacing.Shipment;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,15 +35,17 @@ public class Inventory {
 	private long id;
 
 	@ManyToOne
-	@JsonBackReference(value = "vaccineID")
+//	@JsonBackReference(value = "vaccineID")
 	@JoinColumn(name = "vaccineId")
 	@Getter
 	private Vaccine vaccine;
 	
 	@Getter
+	@NotNull(message = "missing lot information")
 	private String lot;
 	
 	@Getter
+	@Min(value=1, message="min lot size is 1")
 	private int lotSize;
 	
 	@Getter
@@ -48,10 +53,11 @@ public class Inventory {
 	private int available;
 	
 	@Getter
+	@Future(message = "vaccine is already expired")
 	private Date expiration;
 	
 	@ManyToOne
-    @JsonBackReference(value="centerId")
+//    @JsonBackReference(value="centerId")
     @JoinColumn(name = "centerId")
 	@Getter
 	@Setter

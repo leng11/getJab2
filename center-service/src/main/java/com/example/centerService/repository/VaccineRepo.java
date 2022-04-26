@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.centerService.model.Vaccine;
 
 @Repository
+@Transactional
 public interface VaccineRepo extends JpaRepository<Vaccine,Long> {
-	@Transactional
     public Integer deleteByName(String name);
 }

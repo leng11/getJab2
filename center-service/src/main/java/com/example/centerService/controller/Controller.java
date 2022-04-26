@@ -3,8 +3,11 @@ package com.example.centerService.controller;
 
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Controller {
 	public static final String ADD_CENTER_URL = "/v1/vaccineCenters/addCenter";
-	public static final String DELETE_CENTER_BY_NAME_URL = "/v1/vaccineCenters/deleteCenterByName/{centerName}";
+	public static final String DELETE_CENTER_BY_NAME_URL = "/v1/vaccineCenters/deleteCenterByName/{name}";
 	public static final String LIST_CENTER_URL = "/v1/vaccineCenters/listCenter";
 	public static final String ADD_VACCINE_URL = "/v1/vaccineCenters/addVaccine";
-	public static final String DELETE_VACCINE_BY_NAME_URL = "/v1/vaccineCenters/deleteVaccineByName/{vaccineName}";
+	public static final String DELETE_VACCINE_BY_NAME_URL = "/v1/vaccineCenters/deleteVaccineByName/{name}";
 	public static final String LIST_VACCINE_URL = "/v1/vaccineCenters/listVaccine";
 	public static final String RESTOCK_URL = "/v1/vaccineCenters/restock";
 	public static final String PUBLISH_REMINDER_URL = "/v1/vaccineCenters/publishReminder";
@@ -37,11 +40,11 @@ public class Controller {
 	Service service;
 	
 	@PostMapping(ADD_CENTER_URL)
-	public Center add(@RequestBody Center center) {
+	public Center add(@Valid @RequestBody Center center) {
 			return service.add(center);
 	}
 	
-	@PutMapping(DELETE_CENTER_BY_NAME_URL)
+	@DeleteMapping(DELETE_CENTER_BY_NAME_URL)
 	public int deleteCenterByName(@PathVariable final String name) {
 		return service.deleteCenterByName(name);
 	}
@@ -56,7 +59,7 @@ public class Controller {
 		return service.add(vaccine);
 	}
 	
-	@PutMapping(DELETE_VACCINE_BY_NAME_URL)
+	@DeleteMapping(DELETE_VACCINE_BY_NAME_URL)
 	public int deleteVaccineByName(@PathVariable final String name) {
 		return service.deleteVaccineByName(name);
 	}
@@ -73,7 +76,7 @@ public class Controller {
 	
 	@PutMapping(PUBLISH_REMINDER_URL)
 	public Boolean publishReminder(@RequestParam("date") 
-	  								@DateTimeFormat(pattern = "dd-MM-yyyy") Date date) {
+	  								@DateTimeFormat(pattern = "yyyy-mm-dd") Date date) {
 		return service.publishReminder(date);
 	}
 

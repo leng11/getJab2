@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,13 +29,16 @@ public class Vaccine {
 	@Getter
 	@Setter
 	@Column(unique = true)
+	@NotNull
 	private String name;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String provider;
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String contact;
 }
