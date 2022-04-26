@@ -72,8 +72,16 @@ public class Service {
 		return centerRepo.save(center);
 	}
 	
+	public int deleteCenterByName(final String name) {
+		return centerRepo.deleteByName(name);
+	}
+	
 	public Vaccine add(Vaccine vaccine) {
 		return vaccineRepo.save(vaccine);
+	}
+	
+	public int deleteVaccineByName(final String name) {
+		return vaccineRepo.deleteByName(name);
 	}
 	
 	public List<Center> listCenter() {

@@ -2,7 +2,6 @@ package com.example.centerService.controller;
 
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,43 +19,65 @@ import com.example.centerService.model.Vaccine;
 import com.example.centerService.model.clientFacing.Shipment;
 import com.example.centerService.service.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class Controller {
+	public static final String ADD_CENTER_URL = "/v1/vaccineCenters/addCenter";
+	public static final String DELETE_CENTER_BY_NAME_URL = "/v1/vaccineCenters/deleteCenterByName/{centerName}";
+	public static final String LIST_CENTER_URL = "/v1/vaccineCenters/listCenter";
+	public static final String ADD_VACCINE_URL = "/v1/vaccineCenters/addVaccine";
+	public static final String DELETE_VACCINE_BY_NAME_URL = "/v1/vaccineCenters/deleteVaccineByName/{vaccineName}";
+	public static final String LIST_VACCINE_URL = "/v1/vaccineCenters/listVaccine";
+	public static final String RESTOCK_URL = "/v1/vaccineCenters/restock";
+	public static final String PUBLISH_REMINDER_URL = "/v1/vaccineCenters/publishReminder";
 	
 	@Autowired
 	Service service;
 	
-	@PostMapping("/v1/vaccineCenters/addCenter")
+	@PostMapping(ADD_CENTER_URL)
 	public Center add(@RequestBody Center center) {
-		return service.add(center);
+			return service.add(center);
 	}
 	
-	@GetMapping("/v1/vaccineCenters/listCenter")
-	public List<Center> listCenter() {
-		return service.listCenter();
+	@PutMapping(DELETE_CENTER_BY_NAME_URL)
+	public int deleteCenterByName(@PathVariable final String name) {
+		return service.deleteCenterByName(name);
 	}
 	
-	@PostMapping("/v1/vaccineCenters/addVaccine")
+	@GetMapping(LIST_CENTER_URL)
+	public Center[] listCenter() {
+		return service.listCenter().toArray(new Center[0]);
+	}
+	
+	@PostMapping(ADD_VACCINE_URL)
 	public Vaccine add(@RequestBody Vaccine vaccine) {
 		return service.add(vaccine);
 	}
 	
-	@GetMapping("/v1/vaccineCenters/listVaccine")
-	public List<Vaccine> listVaccine() {
-		return service.listVaccine();
+	@PutMapping(DELETE_VACCINE_BY_NAME_URL)
+	public int deleteVaccineByName(@PathVariable final String name) {
+		return service.deleteVaccineByName(name);
 	}
 	
-	@PostMapping("/v1/vaccineCenters/restock")
+	@GetMapping(LIST_VACCINE_URL)
+	public Vaccine[] listVaccine() {
+		return service.listVaccine().toArray(new Vaccine[0]);
+	}
+	
+	@PostMapping(RESTOCK_URL)
 	public Inventory restock(@RequestBody Shipment shipment) {
 		return service.restock(shipment);	
 	}
 	
-	@PutMapping("/v1/vaccineCenters/publishReminder")
+	@PutMapping(PUBLISH_REMINDER_URL)
 	public Boolean publishReminder(@RequestParam("date") 
 	  								@DateTimeFormat(pattern = "dd-MM-yyyy") Date date) {
 		return service.publishReminder(date);
 	}
 
+	// This is to facilitate testing (not a public API.
 	@PutMapping("/v1/vaccineCenters/shotAdministrated/{inventoryId}/{vaccineId}/{lot}/{userId}")
 	public boolean testShotAdministratedFeature(@PathVariable final long inventoryId,
 												@PathVariable final long vaccineId,

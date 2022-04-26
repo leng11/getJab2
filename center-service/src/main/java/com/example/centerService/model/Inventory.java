@@ -14,6 +14,7 @@ import com.example.centerService.model.clientFacing.Shipment;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,13 +25,14 @@ import lombok.Setter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Inventory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@ManyToOne
-	@JsonBackReference
+	@JsonBackReference(value = "vaccineID")
 	@JoinColumn(name = "vaccineId")
 	@Getter
 	private Vaccine vaccine;
@@ -49,7 +51,7 @@ public class Inventory {
 	private Date expiration;
 	
 	@ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value="centerId")
     @JoinColumn(name = "centerId")
 	@Getter
 	@Setter
