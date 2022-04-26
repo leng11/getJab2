@@ -13,3 +13,12 @@ buildNumber.properties
 .DS_Store
 
 .idea/
+
+.classpath
+.project
+.log
+.settings
+*/.classpath
+*/.project
+*/*.log
+*/.settings
