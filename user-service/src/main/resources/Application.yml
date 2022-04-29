@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  profiles: local
+  application:
+    name: CenterService
+    event:
+      incoming:
+        topic:
+          shotAdministrated: shotAdministrated
+
+
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:8002
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: user-listener
+      topic:
+        name: shotAdministrated
+    producer:
+      bootstrap-servers: localhost:8002
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        retries: 10
+
+logging:
+  level:
+    root: INFO
+
