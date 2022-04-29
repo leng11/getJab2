@@ -31,24 +31,39 @@ public class Schedule {
     private int centerId;
     private int vaccineTypeId;
 
-    @Column(name = "totalSlot")
-    @Formula("(SELECT COUNT(*) FROM APPOINTMENT a WHERE a.schedule_id = schedule_id)")
-    private int totalSlot;
+//    @Column(name = "totalSlot")
+//    private int totalSlot;
 
-    @Formula("(SELECT COUNT(*) FROM APPOINTMENT a WHERE a.schedule_id = schedule_id AND a.status = 'open')")
     private int openSlot;
-    @Formula("(SELECT COUNT(*) FROM APPOINTMENT a WHERE a.schedule_id = schedule_id AND a.status = 'completed')")
     private int completedSlot;
     @JsonManagedReference
     @NonNull
     @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Appointment> appointmentList = new ArrayList<>();
 
-    public Schedule(Date date, Time time,int centerId, int vaccineTypeId) {
+    public Schedule(Date date, Time time,int centerId, int vaccineTypeId, int openSlot) {
         this.date = date;
         this.centerId = centerId;
         this.vaccineTypeId = vaccineTypeId;
         this.time = time;
-
+        this.openSlot = openSlot;
+    }
+//    public void setTotalSlots(){
+//        this.totalSlot= this.openSlot+this.completedSlot;
+//    }
+    public void setOpenSlots(){
+        int openSlots = (int) appointmentList.stream()
+                .filter(appointment -> appointment.getStatus().equalsIgnoreCase("open"))
+                .count();
+        this.openSlot = this.openSlot+openSlots;
+    }
+    public void decOpenSlot(){
+        this.openSlot--;
+    }
+    public void setCompletedSlots(){
+        int completedSlots = (int) appointmentList.stream()
+                .filter(appointment -> appointment.getStatus().equalsIgnoreCase("completed"))
+                .count();
+        this.completedSlot = completedSlots;
     }
 }

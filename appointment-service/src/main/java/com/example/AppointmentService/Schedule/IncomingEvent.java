@@ -1,9 +1,7 @@
 package com.example.AppointmentService.Schedule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.sql.Time;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,12 +46,15 @@ public class IncomingEvent implements EventHandler {
                 Object lotSize = msgMap.get("lotSize");
                 Object centerId = msgMap.get("centerId");
 
-                Schedule schedule = scheduleRepository.findByVaccineTypeId((int) vaccineId).orElseThrow(() -> new ResourceNotFoundException("Schedule not found with vaccine id " +vaccineId));
-                List<Appointment> appointmentList = new ArrayList<>();
-                for(int i = 0; i<(int)lotSize;i++){
-                    appointmentList.add(new Appointment(schedule,0,(int) centerId,"none","none","open",null));
-                }
-                appointmentRepository.saveAll(appointmentList);
+                Schedule schedule = scheduleRepository.findFirstByOrderByDateDesc().orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
+                Date date = schedule.getDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DATE,1);
+                Date newDate = new Date(calendar.getTimeInMillis());
+
+                Schedule newSchedule = new Schedule(newDate,new Time(12,30,0),(int) centerId,(int) vaccineId,(int) lotSize);
+                scheduleRepository.save(newSchedule);
             }
             //Publish reminder topic
             if(topic.equalsIgnoreCase(reminderTopic)){
